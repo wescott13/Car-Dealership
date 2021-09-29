@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNet.Identity
+
+
+@if ((User.IsInRole("Sales")) || (User.IsInRole("Admin")))
+{
+    <li class="nav-item">
+        <span class="navbar-text text-dark" style="color:blue">Hello @User.Identity.Name!</span>
+    </li>
+}
+
+@if (Request.IsAuthenticated && (User.IsInRole("Admin")))
+{
+    <li class="breadcrumb-item">
+        <a style="color:black" @Html.ActionLink("Sales", "Index", "Sales")
+    </li>
+    <li class="breadcrumb-item">
+        <a style="color:black" @Html.ActionLink("Admin", "Index", "Admin")
+    </li>
+}
+
+@if (Request.IsAuthenticated && (User.IsInRole("Sales")))
+{
+    <li class="nav-item">@Html.ActionLink("Sales", "Index", "Sales")</li>
+}
+
+@if ((User.IsInRole("Sales")) || (User.IsInRole("Admin")))
+{
+    <li class="breadcrumb-item">
+        <a style="color: blue" @Html.ActionLink("Change Password", "ChangePassword", "Manage")
+    </li>
+    <li class="breadcrumb-item">
+        <a style="color: blue" @Html.ActionLink("Sign Out", "EndSession", "Account")
+    </li>
+}
+@*else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+        </li>
+    }*@
+
+
+
+@*<li class="clearRedirect">@Html.ActionLink("Logout", "Login", "Account")</li>*@
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".clearRedirect").click(function () {
+                // Code disables caching by browser.
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+                Response.Cache.SetNoStore();
+
+                Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.SignOut);
+                Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                ControllerContext.HttpContext.Session.RemoveAll();
+                formsauthentication.signout();
+                window.history.forward(1);
+
+                var backlen = history.length;
+                history.go(-backlen);
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "clearHistory", "ClearHistory();", true);
+                formsauthentication.redirecttologinpage("Login", "Account");
+            });
+        });
+    </script>
+}

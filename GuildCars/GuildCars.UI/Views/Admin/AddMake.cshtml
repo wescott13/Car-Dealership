@@ -1,0 +1,60 @@
+﻿@model GuildCars.Models.UIViews.AddMakes
+@{
+    ViewBag.Title = "AddMake";
+}
+<head>
+    <style>
+        label {
+            float: left;
+        }
+
+        span {
+            display: block;
+            overflow: hidden;
+            padding: 0px 0px 0px 6px;
+        }
+    </style>
+</head>
+
+<h2>Makes</h2>
+
+@using (Html.BeginForm("AddMake", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAddMake" }))
+{
+    @Html.ValidationSummary()
+<div class="row" style="border: 2px solid black; padding-top:20px; margin-bottom:20px">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>New Make</label>
+            <span>
+                @Html.TextBoxFor(m => m.Make.MakeName, new { @class = "form-control" })
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="btn btn-primary">Save</button>
+    </div>
+</div>
+        
+            }
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Make</th>
+                        <th>Date Added</th>
+                        <th>User</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var make in Model.MakesList)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => make.MakeName)</td>
+                            <td>@Html.DisplayFor(modelItem => make.CreatedDate)</td>
+                            <td>@Html.DisplayFor(modelItem => make.UserEmail)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>

@@ -1,0 +1,179 @@
+﻿@model List<GuildCars.Models.Queries.VehicleDetails>
+
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>New Vehicles</h2>
+
+<div style="border: 2px solid black; padding:5px">
+    <h3>Quick Search</h3>
+
+    <form class="row">
+        <div class="form-group col-lg-3">
+            <input type="text" class="form-control" id="searchTerm" placeholder="Enter make, model, or year">
+        </div>
+
+        <div class="form-group form-inline col-lg-3">
+            <label>Price</label>
+            <select class="form-control" id="minPrice">
+                <option value="0">No Min</option>
+                <option value="5000">$5,000</option>
+                <option value="10000">$10,000</option>
+                <option value="15000">$15,000</option>
+                <option value="20000">$20,000</option>
+                <option value="25000">$25,000</option>
+                <option value="30000">$30,000</option>
+                <option value="35000">$35,000</option>
+                <option value="40000">$40,000</option>
+                <option value="45000">$45,000</option>
+                <option value="50000">$50,000</option>
+                <option value="55000">$55,000</option>
+                <option value="60000">$60,000</option>
+            </select>
+            <select class="form-control" id="maxPrice">
+                <option value="1000000">No Max</option>
+                <option value="5000">$5,000</option>
+                <option value="10000">$10,000</option>
+                <option value="15000">$15,000</option>
+                <option value="20000">$20,000</option>
+                <option value="25000">$25,000</option>
+                <option value="30000">$30,000</option>
+                <option value="35000">$35,000</option>
+                <option value="40000">$40,000</option>
+                <option value="45000">$45,000</option>
+                <option value="50000">$50,000</option>
+                <option value="55000">$55,000</option>
+                <option value="60000">$60,000</option>
+            </select>
+        </div>
+        <div class="form-group form-inline col-lg-3">
+            <label>Year</label>
+            <select class="form-control" id="minYear">
+                <option value="0">No Min</option>
+                <option value="1970">1970</option>
+                <option value="1980">1980</option>
+                <option value="1990">1990</option>
+                <option value="1995">1995</option>
+                <option value="2000">2000</option>
+                <option value="2005">2005</option>
+                <option value="2010">2010</option>
+                <option value="2015">2015</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+            </select>
+            <select class="form-control" id="maxYear">
+                <option value="3000">No Max</option>
+                <option value="1970">1970</option>
+                <option value="1980">1980</option>
+                <option value="1990">1990</option>
+                <option value="1995">1995</option>
+                <option value="2000">2000</option>
+                <option value="2005">2005</option>
+                <option value="2010">2010</option>
+                <option value="2015">2015</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+            </select>
+        </div>
+    </form>
+
+    <div style="text-align:center;">
+        <button type="submit" id="searchVehicle" class="btn btn-default" value="Search" onclick="search()">Search</button>
+    </div>
+</div>
+
+    <div class="row">
+        <h3>Search Results</h3>
+        <div id="searchResults" class="col-xs-12" >
+
+        </div>
+    </div>
+
+    @section scripts
+ {
+        <script>
+                $(document).ready(function () {
+                    $("#searchForm").submit(function (e) {
+                        search();
+                        return false;
+                    });
+                });
+
+                function search() {
+                    var params;
+                    var imagePath = '@Url.Content("~/Images/")';
+
+                    var detailsPath = '@Url.Action("Details", "Inventory")/';
+
+                    params = 'MinPrice=' + $('#minPrice').val() + '&MaxPrice=' + $('#maxPrice').val() + '&MinYear=' + $('#minYear').val() + '&MaxYear=' + $('#maxYear').val() +
+                        '&SearchTerm=' + $('#searchTerm').val();
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'https://localhost:44363/api/newVehicles/search?' + params,
+                        success: function (results) {
+                            $('#searchResults').empty();
+
+                            $.each(results, function (index, vehicleDetails) {
+                                var VehicleId = vehicleDetails.VehicleId;
+
+                                var html = '<div class="form-inline col-md-12" style="border: 2px solid black; padding:5px; margin-bottom:10px"' +
+                                    '<p class><strong>' + vehicleDetails.VehicleYear + ' ' + vehicleDetails.MakeName + ' ' + vehicleDetails.ModelTypeName + '</strong></p>' +
+                                    '<div class="col-md-3  form-inline ">' +
+                                    '<p class><img src="' + imagePath + vehicleDetails.ImageFileName + '" /></p>' +
+                                    '</div >' +
+                                    '<div class="col-md-3  form-inline ">' +
+                                    '<p class><b>' + 'Body Style:  </b>' + isEmpty(vehicleDetails.BodyStyleName) + ' </p>' +
+                                    '<p class><b>' + 'Trans:  </b>' + isEmpty(vehicleDetails.TransmissionTypeName) + ' </p>' +
+                                    '<p class><b>' + 'Color:  </b>' + isEmpty(vehicleDetails.ExteriorColorName) + ' </p>' +
+                                    '</div >' +
+                                    '<div class="col-md-3  form-inline ">' +
+                                    '<p class><b>' + 'Interior:  </b>' + isEmpty(vehicleDetails.InteriorColorName) + ' </p>' +
+                                    '<p class><b>' + 'Mileage:  </b>' + mileage(vehicleDetails.Mileage) + ' </p>' +
+                                    '<p class><b>' + 'VIN #:  </b>' + vehicleDetails.VIN + ' </p>' +
+                                    '</div >' +
+                                    '<div class="col-md-3  form-inline ">' +
+
+                                    '<p class><b>' + 'Sale Price:  </b>' + '$' + numberWithCommas(vehicleDetails.SalePrice) + ' </p>' +
+                                    '<p class><b>' + 'MSRP:  </b>' + '$' + numberWithCommas(vehicleDetails.MSRP) + ' </p>' +
+
+                                    /*'<p class><a href="' + detailsPath + vehicleDetails.VehicleId + '">Details</a></p>' +*/
+                                    '<a href="https://localhost:44363/Inventory/Details?VehicleId=' + VehicleId + '"><button type="button" class="btn btn-primary">Details</button></a>'
+
+                                '</div>' +
+                                '</div>';
+
+                                $('#searchResults').append(html.toString());
+                            });
+
+                        },
+                        error: function () {
+                            alert('Error performing search, try again later!')
+                        }
+
+
+                    });
+
+                    function numberWithCommas(x) {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                    function mileage (x) {
+                        if (x < 100) {
+                            return "New"
+
+                        } else {
+                            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    }
+                    function isEmpty(x) {
+                        if (x === undefined || x == null || x.length === 0) {
+                            return 'No Info Available';
+                        }
+                        return x;
+                    }
+                }
+        </script>
+    }

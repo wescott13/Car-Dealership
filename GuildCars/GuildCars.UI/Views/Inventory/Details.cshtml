@@ -1,0 +1,94 @@
+﻿@model GuildCars.Models.Queries.VehicleDetails
+
+@{
+    ViewBag.Title = "Details";
+
+}
+
+<h2>Vehicle Details</h2>
+<div style="border: 2px solid black; padding:5px">
+    <div class="row">
+        <div class="col-md-12">
+            <strong>@Model.VehicleYear @Model.MakeName @Model.ModelTypeName</strong>
+            <br />
+            <div class="col-md-3">
+                <img src="@Url.Content("~/Images/" + Model.ImageFileName)" />
+            </div>
+            <div class="col-md-3">
+                <p><b>Body Style:  </b><div id='bodyStyleName'></div></p>
+                <p><b>Trans:  </b><div id='transmissionTypeName'></div></p>
+                <p><b>Color:  </b><div id='exteriorColorName'></div></p>
+            </div>
+            <div class="col-md-3">
+                <p><b>Interior:  </b><div id='interiorColorName'></div></p>
+                <p><b>Mileage:  </b></b><div id='mileage'></div></p>
+                <p><b>VIN#:  </b>@Model.VIN</p>
+            </div>
+            <div class="col-md-3">
+                <p><b>Sale Price:  </b>@Model.SalePrice.ToString("c0")</p>
+                <p><b>MSRP:  </b>@Model.MSRP.ToString("c0")</p>
+            </div>
+        </div>
+
+    </div>
+    <div style="padding-left:296px">
+        <p class="text-justify"><b>Description:  </b>@Model.VehicleDescription</p>
+    </div>
+
+    <div class="row">
+        <div class="text-right" style="padding:20px" >
+            <p>
+                @Html.ActionLink("Contact Us", "Contact", "Home", new { VIN = @Model.VIN }, new { @class = "btn btn-primary" })
+            </p>
+        </div>
+    </div>
+</div>
+    @section scripts
+ {
+        <script>
+
+        $(document).ready(function () {
+            loadDetails();
+        });
+
+        function loadDetails() {
+            var bodyStyleName = @(Html.Raw(Json.Encode(Model.BodyStyleName)));
+            var transmissionTypeName = @(Html.Raw(Json.Encode(Model.TransmissionTypeName)));
+            var exteriorColorName = @(Html.Raw(Json.Encode(Model.ExteriorColorName)));
+            var interiorColorName = @(Html.Raw(Json.Encode(Model.InteriorColorName)));
+
+            $("#bodyStyleName").append(isEmpty(bodyStyleName));
+            $("#transmissionTypeName").append(isEmpty(transmissionTypeName));
+            $("#exteriorColorName").append(isEmpty(exteriorColorName));
+            $("#interiorColorName").append(isEmpty(interiorColorName));
+            $("#mileage").append(mileage(@Model.Mileage));
+        }
+
+                    function numberWithCommas(x) {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                    function mileage (x) {
+                        if (x < 1000) {
+                            return "New"
+
+                        } else {
+                            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    }
+                    function isEmpty(x) {
+                        if (x === undefined || x == null || x.length === 0) {
+                            return 'No Info Available';
+                        }
+                        return x;
+        }
+        function objToString(obj) {
+            let str = '';
+            for (const [p, val] of Object.entries(obj)) {
+                str += `${p}::${val}\n`;
+            }
+            return str;
+        }
+
+
+        </script>
+    }

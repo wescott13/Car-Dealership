@@ -1,0 +1,66 @@
+﻿@model GuildCars.Models.UIViews.HomeIndex
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .carousel {
+        background-color: blue;
+        color: yellow; 
+    }
+    .jumbotron {
+        background-color: blue;
+    }
+
+</style>
+<div class="jumbotron" id="jumbotron">
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            @foreach (var special in Model.special)
+            {
+                if (special.SpecialId == 1)
+                {
+                    <div class="item active" id="specialslide-@special.SpecialId">
+                        <div class="slide" id="id-{@special.SpecialId}">
+                            <h2> @special.Title</h2>
+                            <h3 class="text-center">@special.SpecialDescription</h3>
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="item" id="specialslide-@special.SpecialId">
+                        <div class="slide" id="id-{@special.SpecialId}">
+                            <h2> @special.Title</h2>
+                            <h3 class="text-center">@special.SpecialDescription</h3>
+
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+        <h3>Featured Vehicles</h3>
+        <br />
+        @foreach (var featuredVehicle in Model.featuredVehicles)
+        {
+
+            <div class="col-xl-12 col-sm-6 col-md-4">
+                <button onclick="featuredVehicle">
+                    <a href="@Url.Action("Details","Inventory",new {VehicleId = featuredVehicle.vehicleId })">
+                        <p class="featuredVehicle"><img src="@Url.Content("~/Images/" + featuredVehicle.ImageFileName)" /></p>
+                        <p class="featuredVehicle"><strong>@featuredVehicle.VehicleYear @featuredVehicle.MakeName @featuredVehicle.ModelTypeName</strong></p>
+                        <p class="featuredVehicle">@featuredVehicle.SalePrice.ToString("c")</p>
+                    </a>
+                </button>
+            </div>
+        }
+    </div>

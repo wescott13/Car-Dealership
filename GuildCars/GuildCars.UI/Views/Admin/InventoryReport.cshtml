@@ -1,0 +1,66 @@
+﻿@model GuildCars.Models.UIViews.InventoryReport
+@{
+    ViewBag.Title = "InventoryReport";
+}
+
+<h2>Inventory Report</h2>
+
+<div class="row">
+    <h3>New Vehicles</h3>
+    <div class="col-xs-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Count</th>
+                    <th>Stock Value</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.NewVehicles)
+            {
+                <tr>
+                    <td>@item.VehicleYear</td>
+                    <td>@item.MakeName</td>
+                    <td>@item.ModelTypeName</td>
+                    <td>@item.VehicleCount</td>
+                    <td>@item.StockValue</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <h3>Used Vehicles</h3>
+    <div class="col-xs-12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Count</th>
+                    <th>Stock Value</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UsedVehicles)
+                {
+                    <tr>
+                        <td>@item.VehicleYear</td>
+                        <td>@item.MakeName</td>
+                        <td>@item.ModelTypeName</td>
+                        <td>@item.VehicleCount</td>
+                        <td>@item.StockValue</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

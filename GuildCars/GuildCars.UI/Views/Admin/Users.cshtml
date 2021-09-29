@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GuildCars.Models.Queries.UserDetails>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+<div>@Html.ActionLink("Add a new User", "Register", "Account")</div>
+<br/>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => user.LastName)</td>
+            <td>@Html.DisplayFor(modelItem => user.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => user.Email)</td>
+            <td>@Html.DisplayFor(modelItem => user.RoleName)</td>
+            <td><p>@Html.ActionLink("Edit", "EditUser", "Account", new { Id = user.Id}, null)</p></td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,71 @@
+﻿@model GuildCars.Models.UIViews.AddModels
+@{
+    ViewBag.Title = "AddModel";
+}
+<head>
+    <style>
+        label {
+            float: left;
+        }
+
+        span {
+            display: block;
+            overflow: hidden;
+            padding: 0px 0px 0px 6px;
+        }
+    </style>
+</head>
+<h2>Models</h2>
+@using (Html.BeginForm("AddModel", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAddModel" }))
+{
+    @Html.ValidationSummary()
+    
+<div class="row" style="border: 2px solid black; padding-top:20px; margin-bottom:20px">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>New Model</label>
+            <span>
+                @Html.TextBoxFor(m => m.vehicleModel.ModelTypeName, new { @class = "form-control" })
+            </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Make</label>
+            <span>
+                @Html.DropDownListFor(m => m.vehicleModel.MakeId, Model.VehicleMakes, new { @class = "form-control" })
+            </span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <button class="btn btn-primary">Save</button>
+        </div>
+    </div>
+
+</div>
+    }
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Date Added</th>
+                <th>User</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var model in Model.ModelsList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => model.MakeTypeName)</td>
+                    <td>@Html.DisplayFor(modelItem => model.ModelTypeName)</td>
+                    <td>@Html.DisplayFor(modelItem => model.CreatedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => model.UserEmail)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "|";  
+        }
+        .breadcrumb {
+            background-color: white;
+            border: 2px solid black;
+           
+        }
+        .navbar {
+            margin-top: -30px;
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" >
+
+                <div class="container-fluid">
+                    <nav label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <img src="~/images/logo.png" height="30" width="30">
+                            <li class="breadcrumb-item active" current="page">
+                                <a style="color:black" @Html.ActionLink("Home", "Index", "Home") </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a style="color:black" @Html.ActionLink("New Inventory", "New", "Inventory")</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a style="color:black" @Html.ActionLink("Used Inventory", "Used", "Inventory")</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a style="color:black" @Html.ActionLink("Specials", "Specials", "Home")</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a style="color:black" @Html.ActionLink("Contact", "Contact", "Home")</a>
+                            </li>
+
+                            <li class="breadcrumb-item">
+                                <a style="color:black" @Html.Partial("_LoginPartial")</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+        </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

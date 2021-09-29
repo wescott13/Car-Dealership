@@ -1,0 +1,19 @@
+﻿@model GuildCars.Models.UIViews.HomeIndex
+
+@{
+    ViewBag.Title = "Specials";
+}
+
+<h2>Specials</h2>
+
+<div class="row">
+    <div class="col-xs-12">
+        @foreach (var specials in Model.special)
+        {
+            <div style="border: 2px solid black; padding: 5px;; margin-bottom: 10px">
+                <p><strong>@specials.Title</strong></p>
+                <p>@specials.SpecialDescription</p>
+            </div>
+            }
+        </div>
+</div>

@@ -1,0 +1,71 @@
+﻿@model GuildCars.Models.UIViews.AddDeleteSpecials
+@{
+    ViewBag.Title = "AddDeleteSpecial";
+}
+<head>
+    <style>
+        label {
+            float: left;
+            text-align: right;
+        }
+
+        span {
+            display: block;
+            overflow: hidden;
+            padding: 0px 0px 0px 6px; 
+        }
+        ToRight {
+            float: right;
+        }
+
+    </style>
+</head>
+
+<h2>Specials</h2>
+@using (Html.BeginForm("AddDeleteSpecial", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAddDeleteSpecial" }))
+{
+    @Html.ValidationSummary()
+    <div class="row" style="border: 2px solid black; padding-top:20px; padding-bottom: 20px ;margin-bottom:20px">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label style="padding-right:50px">Title</label>
+                <span>
+                    @Html.TextBoxFor(m => m.Special.Title, new { @class = "form-control" })
+                </span>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <span>
+                    @Html.TextAreaFor(m => m.Special.SpecialDescription, new { @class = "form-control" })
+                </span>
+            </div>
+
+            <div class="col-md-4">
+                <button class="btn btn-primary">Save</button>
+
+            </div>
+
+        </div>
+    </div>
+
+        }
+ 
+        <div class="row">
+            <div class="col-xs-12">
+
+                @foreach (var specials in Model.SpecialsList)
+                {
+                    <div class="form-inline col-md-12" style="border: 2px solid black; padding:5px; margin-bottom:10px">
+                        
+                            <strong>@specials.Title</strong>
+                            <ToRight>
+                                <a href="@Url.Action("DeleteSpecial", "Admin", new { Id = specials.SpecialId })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this special?')">Delete</a>
+
+                            </ToRight>
+                            
+                        <p>@specials.SpecialDescription</p>
+                    </div>
+                }
+            </div>
+        </div>
+

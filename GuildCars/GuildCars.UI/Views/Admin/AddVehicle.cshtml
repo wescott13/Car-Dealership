@@ -1,0 +1,115 @@
+﻿@model GuildCars.Models.UIViews.AddEditVehicle
+@{
+    ViewBag.Title = "AddVehicle";
+}
+
+<h2>Add Vehicle</h2>
+<div class="row">
+    <div>
+
+        @using (Html.BeginForm("AddVehicle", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formAddVehicle" }))
+        {
+            @Html.ValidationSummary()
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="make">Make</label>
+                        @Html.DropDownListFor(m => m.Vehicle.MakeId, Model.VehicleMakes, "-- Please select --", new { @class = "form-control", onchange = "MakeModelSelect(this.value)" })
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        @Html.DropDownListFor(m => m.Vehicle.TypeId, Model.VehicleType, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        @Html.TextBoxFor(m => m.Vehicle.VehicleYear, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        @Html.DropDownListFor(m => m.Vehicle.ExteriorColorId, Model.ExteriorColor, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Mileage</label>
+                        @Html.TextBoxFor(m => m.Vehicle.Mileage, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>MSRP</label>
+                        @Html.TextBoxFor(m => m.Vehicle.MSRP, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ModelId">Model</label>
+                        <select name="Vehicle.ModelId" id="modelSelections" class="form-control" disabled>
+                            <option selected disabled>Choose model</option>
+                            @foreach (var m in Model.VehicleModels)
+                            {
+                                <option value="@m.Value">@m.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>BodyStyle</label>
+                        @Html.DropDownListFor(m => m.Vehicle.BodyStyleId, Model.BodyStyles, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Transmission</label>
+                        @Html.DropDownListFor(m => m.Vehicle.TransmissionId, Model.Transmission, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Interior</label>
+                        @Html.DropDownListFor(m => m.Vehicle.InteriorColorId, Model.InteriorColor, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>VIN #</label>
+                        @Html.TextBoxFor(m => m.Vehicle.VIN, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Sale Price</label>
+                        @Html.TextBoxFor(m => m.Vehicle.SalePrice, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Description</label>
+                        @Html.TextAreaFor(m => m.Vehicle.VehicleDescription, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Picture</label>
+                        <input id="ImageUpload" name="ImageUpload" type="file" class="form-control" />
+                    </div>
+                    <button class="btn btn-primary">Save</button>
+                </div>
+            </div>
+                }
+
+            </div>
+        </div>
+
+@*How to populate values in one html dropdownlist with another using javascript*@
+<script>
+
+    function MakeModelSelect(selection) {
+        $.ajax({
+            type: 'GET',
+            url: 'https://localhost:44363/api/make/' + selection,
+            success: function (results) {
+                $("#modelSelections").html('');
+                $("#modelSelections").append('<option value = "" selected>Choose model</option>');
+                $.each(results, function (index, Vehicle) {
+                    var html = '<option value="' + Vehicle.ModelId + '">' + Vehicle.ModelTypeName + '</option>';
+                    $('#modelSelections').append(html.toString());
+                });
+                $('#modelSelections').prop("disabled", false);
+                
+            },
+            error: function () {
+                alert('Error performing search, try again later!')
+            }
+        });
+    }
+   
+</script>
